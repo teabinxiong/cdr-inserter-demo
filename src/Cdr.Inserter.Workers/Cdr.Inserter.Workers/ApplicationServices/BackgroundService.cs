@@ -8,10 +8,10 @@ namespace Cdr.Inserter.Workers.ApplicationServices
 {
     public sealed class BackgroundService
     {
-        private ServicesManager _servicesManager;
-        public BackgroundService()
+        private readonly ServicesManager _servicesManager;
+        public BackgroundService(ServicesManager servicesManager)
         {
-            _servicesManager = new ServicesManager();
+            _servicesManager = servicesManager;
         }
 
         public void Start()

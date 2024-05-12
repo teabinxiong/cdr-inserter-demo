@@ -1,5 +1,6 @@
 using Cdr.Inserter.Workers;
-
+using Cdr.Inserter.Workers.ApplicationServices;
+using Cdr.Inserter.Workers.ApplicationServices.WorkerServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +22,9 @@ var builder = new HostBuilder()
          .ConfigureServices(s =>
          {
              s.AddSingleton<Cdr.Inserter.Workers.ApplicationServices.BackgroundService>();
+             s.AddSingleton<ServicesManager>();
+             s.AddSingleton<CdrFileWatcherService>();
+             s.AddTransient<CdrFileProcessingService>();
          })
          .UseSerilog();
 

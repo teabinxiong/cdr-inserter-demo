@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cdr.Inserter.Workers.ApplicationServices.WorkerServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,21 +12,22 @@ namespace Cdr.Inserter.Workers.ApplicationServices
         
         CancellationTokenSource cts = new CancellationTokenSource();
 
-        public ServicesManager()
+        private readonly CdrFileWatcherService _cdrFileWatcherService;
+
+        public ServicesManager(CdrFileWatcherService cdrFileWatcherService)
         {
-          
+            _cdrFileWatcherService = cdrFileWatcherService;
         }
 
         public void StartAllThread()
         {
-            
+            ThreadPool.QueueUserWorkItem(_cdrFileWatcherService.StartThreadProc, cts.Token);
         }
 
         public void StopAllThread()
         {
             Global.Logger.Information("StopAllThread");
-
-            
+            _cdrFileWatcherService.StopThread();
 
             cts.Cancel();
 

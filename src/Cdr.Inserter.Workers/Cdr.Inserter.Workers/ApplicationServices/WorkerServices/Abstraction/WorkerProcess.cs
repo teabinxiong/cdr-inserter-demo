@@ -12,7 +12,7 @@ namespace Cdr.Inserter.Workers.ApplicationServices.WorkerServices.Abstraction
         private bool stopThread = false;
         public abstract void StartThreadProc(object obj);
 
-        public void StopThread()
+        public virtual void StopThread()
         {
             stopThread = true;
         }

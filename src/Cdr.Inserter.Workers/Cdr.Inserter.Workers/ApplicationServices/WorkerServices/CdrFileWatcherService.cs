@@ -10,9 +10,11 @@ namespace Cdr.Inserter.Workers.ApplicationServices.WorkerServices
 {
     public sealed class CdrFileWatcherService : WorkerProcess
     {
+        private List<WorkerProcess> workerProcesses = new List<WorkerProcess>();
+
         public override void StartThreadProc(object obj)
         {
-            var path = (string)obj;
+            var cts = (CancellationToken)obj;
 
             Global.ThreadCompleteEvents.Add(this.completeEvent);
 
@@ -26,7 +28,7 @@ namespace Cdr.Inserter.Workers.ApplicationServices.WorkerServices
             watcher.Created += new FileSystemEventHandler(watcher_FileCreated);
 
             //Set the path 
-            watcher.Path = path;
+            watcher.Path = Global.StoragePath;
 
             //Enable the FileSystemWatcher events.
             watcher.EnableRaisingEvents = true;
@@ -39,13 +41,26 @@ namespace Cdr.Inserter.Workers.ApplicationServices.WorkerServices
             if (!objFileInfo.Exists) return;
             ParseMessage(e.FullPath);
 
-            // TODO: Run the task in thread pools to preocess the file
+            // run task in a new thread to handle csv file processing
+            var fileProcessingService = new CdrFileProcessingService();
+            workerProcesses.Add(fileProcessingService);
+
+            ThreadPool.QueueUserWorkItem(fileProcessingService.StartThreadProc, e.FullPath);
         }
 
         private void ParseMessage(string fullPath)
         {
+            // log file path
             Global.Logger.Information(fullPath);
-            // read file here
+        }
+
+        public override void StopThread()
+        {
+            base.StopThread();
+            foreach(var process in workerProcesses)
+            {
+                process.StopThread();
+            }
         }
     }
 }
