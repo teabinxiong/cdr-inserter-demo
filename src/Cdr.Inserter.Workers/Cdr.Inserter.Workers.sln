@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdr.Inserter.Workers", "Cdr
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5F1BFF71-4591-4F6C-97AD-4D089DA7AB75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdr.Inserter.Monitor", "Cdr.Inserter.Monitor\Cdr.Inserter.Monitor.csproj", "{FA20A23E-B09E-4A09-867B-6BB86B4259C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5F1BFF71-4591-4F6C-97AD-4D089DA7AB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1BFF71-4591-4F6C-97AD-4D089DA7AB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1BFF71-4591-4F6C-97AD-4D089DA7AB75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA20A23E-B09E-4A09-867B-6BB86B4259C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA20A23E-B09E-4A09-867B-6BB86B4259C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA20A23E-B09E-4A09-867B-6BB86B4259C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA20A23E-B09E-4A09-867B-6BB86B4259C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
