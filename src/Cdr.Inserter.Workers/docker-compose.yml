@@ -2,8 +2,7 @@ version: '3.4'
 
 networks:
   my_network:
-    name: cdr_inserter_infra_network
-    external: true
+    driver: bridge
 
 services:
   zookeeper:
