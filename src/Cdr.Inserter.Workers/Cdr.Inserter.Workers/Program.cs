@@ -26,6 +26,13 @@ Log.Logger = new LoggerConfiguration()
 
 Global.Logger = Log.Logger;
 
+/*
+var currentDirectory = Directory.GetCurrentDirectory();
+
+string[] filePaths = Directory.GetFiles(currentDirectory+@"/storage", "*.txt",
+                                         SearchOption.TopDirectoryOnly);
+*/
+
 var configuration = host.Services.GetRequiredService<IConfiguration>();
 
 var svc = new Cdr.Inserter.Workers.ApplicationServices.BackgroundService();

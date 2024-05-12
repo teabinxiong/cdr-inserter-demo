@@ -6,3 +6,5 @@ services:
     build:
       context: .
       dockerfile: Cdr.Inserter.Workers/Dockerfile
+    volumes:
+        - ../storage:/app/storage
