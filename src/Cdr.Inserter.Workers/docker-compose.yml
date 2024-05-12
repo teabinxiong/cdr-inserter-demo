@@ -1,6 +1,74 @@
 version: '3.4'
 
+networks:
+  my_network:
+    name: cdr_inserter_infra_network
+    external: true
+
 services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    networks: 
+      - my_network
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    networks: 
+      - my_network
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_CLEANER_DELETE_RETENTION_MS: 5000
+      KAFKA_BROKER_ID: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafdrop
+    networks: 
+      - my_network
+    depends_on:
+      - kafka
+    ports:
+      - 9000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+
+
+  init-kafka:
+      image: confluentinc/cp-kafka:latest
+      depends_on:
+        - kafka
+      entrypoint: [ '/bin/sh', '-c' ]
+      networks:
+        - my_network
+      command: |
+        "
+        # blocks until kafka is reachable
+        kafka-topics --bootstrap-server kafka:29092 --list
+      
+        echo -e 'Creating kafka topics'
+        kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic cdr-report --replication-factor 1 --partitions 3
+      
+        echo -e 'Successfully created the following topics:'
+        kafka-topics --bootstrap-server kafka:29092 --list
+        "
+
   cdr.inserter.workers:
     image: ${DOCKER_REGISTRY-}cdrinserterworkers
     build:
@@ -8,3 +76,8 @@ services:
       dockerfile: Cdr.Inserter.Workers/Dockerfile
     volumes:
         - ../storage:/app/storage
+    depends_on: 
+      - kafka
+    networks:
+      - my_network
+

@@ -15,5 +15,7 @@ namespace Cdr.Inserter.Workers
         public const int MaxThreads = 5;
 
         public const string StoragePath = @"/app/storage";
+
+        public const string TopicCdrReport = "cdr-report";
     }
 }

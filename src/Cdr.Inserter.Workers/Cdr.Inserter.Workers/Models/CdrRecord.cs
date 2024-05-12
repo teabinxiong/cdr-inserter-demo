@@ -40,5 +40,9 @@ namespace Cdr.Inserter.Workers.Models
         [JsonProperty("DATE")]
         public string Date { get; set; }
 
+        public override string? ToString()
+        {
+            return $"{Msidn},{Imsi},{Imei},{Plan}";
+        }
     }
 }

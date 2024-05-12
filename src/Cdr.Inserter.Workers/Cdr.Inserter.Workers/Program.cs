@@ -1,6 +1,7 @@
 using Cdr.Inserter.Workers;
 using Cdr.Inserter.Workers.ApplicationServices;
 using Cdr.Inserter.Workers.ApplicationServices.WorkerServices;
+using Cdr.Inserter.Workers.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +26,8 @@ var builder = new HostBuilder()
              s.AddSingleton<ServicesManager>();
              s.AddSingleton<CdrFileWatcherService>();
              s.AddTransient<CdrFileProcessingService>();
+             s.AddSingleton<KafkaClientHandle>();
+             s.AddSingleton<KafkaDependentProducer<string, string>>();
          })
          .UseSerilog();
 

@@ -8,7 +8,8 @@
       "dotnetRunMessages": true
     },
     "Docker": {
-      "commandName": "Docker"
+      "commandName": "Docker",
+      "DockerfileRunArguments": "--network cdr_inserter_infra_network"
     }
   }
 }
