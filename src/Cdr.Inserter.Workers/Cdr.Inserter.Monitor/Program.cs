@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
 using System.Runtime.ConstrainedExecution;
-
+using Cdr.Inserter.Monitor.Kafka;
 
 var builder = new HostBuilder()
          .ConfigureAppConfiguration((hostingContext, config) =>
@@ -29,6 +29,7 @@ var builder = new HostBuilder()
              s.AddSingleton<Cdr.Inserter.Monitor.ApplicationServices.BackgroundService>();
              s.AddSingleton<ServicesManager>();
              s.AddSingleton<CdrRecordMonitor>();
+             s.AddSingleton<KafkaClientHandle>();
          })
          .UseSerilog();
 

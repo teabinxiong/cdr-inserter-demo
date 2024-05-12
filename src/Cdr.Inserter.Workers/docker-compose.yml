@@ -81,3 +81,14 @@ services:
     networks:
       - my_network
 
+
+  cdr.inserter.monitor:
+    image: ${DOCKER_REGISTRY-}cdrinsertermonitor
+    build:
+      context: .
+      dockerfile: Cdr.Inserter.Monitor/Dockerfile
+    depends_on: 
+      - kafka
+    networks:
+      - my_network
+

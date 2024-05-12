@@ -72,7 +72,7 @@ namespace Cdr.Inserter.Workers.ApplicationServices.WorkerServices
             
             _producer.Produce(
                 Global.TopicCdrReport,
-                new Message<string, string> { Key = cdrRecords.Msidn, Value = "testValue" },
+                new Message<string, string> { Key = cdrRecords.Msidn, Value = JsonConvert.SerializeObject(cdrRecords) },
                 deliveryReportHandler
             );
             

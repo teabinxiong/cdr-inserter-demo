@@ -21,7 +21,10 @@ namespace Cdr.Inserter.Monitor.ApplicationServices
 
         public void StartAllThread()
         {
-            ThreadPool.QueueUserWorkItem(_cdrRecordMonitor.StartThreadProc, cts.Token);
+            for (var i = 0; i < Global.MaxThreads; i++)
+            {
+                ThreadPool.QueueUserWorkItem(_cdrRecordMonitor.StartThreadProc, cts.Token);
+            }
         }
 
         public void StopAllThread()
