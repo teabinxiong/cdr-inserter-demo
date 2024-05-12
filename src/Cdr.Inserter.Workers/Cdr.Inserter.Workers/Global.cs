@@ -11,5 +11,7 @@ namespace Cdr.Inserter.Workers
         public static Serilog.ILogger Logger;
 
         public static List<ManualResetEvent> ThreadCompleteEvents = new List<ManualResetEvent>();
+
+        public const int MaxThreads = 5;
     }
 }

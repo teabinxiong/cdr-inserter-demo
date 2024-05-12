@@ -20,7 +20,7 @@ namespace Cdr.Inserter.Workers.ApplicationServices
 
             _servicesManager.StartAllThread();
 
-            Global.Logger.Information("Press q or Q to quit");
+            Global.Logger.Information("All services started");
         }
 
         public void Stop()

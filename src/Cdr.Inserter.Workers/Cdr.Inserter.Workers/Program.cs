@@ -6,55 +6,47 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
 
-var builder = new ConfigurationBuilder();
-builder.SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
-    .AddEnvironmentVariables();
 
-IHost host = Host.CreateDefaultBuilder()
-    .ConfigureServices((context, services) =>
-    {
-    })
-    .UseSerilog()
-    .Build();
+var builder = new HostBuilder()
+         .ConfigureAppConfiguration((hostingContext, config) =>
+         {
+             config.AddJsonFile("appsettings.json", optional: true);
+             config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true);
+             config.AddEnvironmentVariables();
+             if (args != null)
+             {
+                 config.AddCommandLine(args);
+             }
+         })
+         .ConfigureServices(s =>
+         {
+             s.AddSingleton<Cdr.Inserter.Workers.ApplicationServices.BackgroundService>();
+         })
+         .UseSerilog();
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Build())
+
+using (IHost host = builder.Build())
+{
+    var svc = host.Services.GetRequiredService<Cdr.Inserter.Workers.ApplicationServices.BackgroundService>();
+
+    Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(host.Services.GetRequiredService<IConfiguration>())
     .MinimumLevel.Verbose()
     .CreateLogger();
+     
+    Global.Logger = Log.Logger;
+    Global.Logger.Information("Start....");
 
-Global.Logger = Log.Logger;
-
-/*
-var currentDirectory = Directory.GetCurrentDirectory();
-
-string[] filePaths = Directory.GetFiles(currentDirectory+@"/storage", "*.txt",
-                                         SearchOption.TopDirectoryOnly);
-*/
-
-var configuration = host.Services.GetRequiredService<IConfiguration>();
-
-var svc = new Cdr.Inserter.Workers.ApplicationServices.BackgroundService();
-svc.Start();
+    host.Start();
+    svc.Start();
 
 
-bool quit = false;
+    host.WaitForShutdown();
+    Global.Logger.Information("Received close Signal");
+    Console.WriteLine("Received close Signal");
+    svc.Stop();
 
-while (!quit)
-{
-    Thread.Sleep(1000);
-    if (Console.KeyAvailable)
-    {
-        ConsoleKeyInfo key = Console.ReadKey();
-        if (key.KeyChar == 'q' || key.KeyChar == 'Q')
-        {
-            Global.Logger.Information("Quit Program");
-
-            svc.Stop();
-        }
-    }
 }
 
-
-host.Run();
+Global.Logger.Information("Returning exit code from Program.Main.");
+return 123;
