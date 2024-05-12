@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  cdr.inserter.workers:
+    image: ${DOCKER_REGISTRY-}cdrinserterworkers
+    build:
+      context: .
+      dockerfile: Cdr.Inserter.Workers/Dockerfile
