@@ -1,6 +1,6 @@
-# CDR Inserter Demo
+# Telco CDR Inserter Demo
 
-Simplified CDR Inserter Demo written in .NET Core, C#. Technologies used in this project include Worker Services, Kafka, Docker, Multi-Threading, and realtime processing. Demonstrated thread synchronization by using ManualResetEvent and showed how Multithreading could help in processing large amounts of CDR in realtime.
+Simplified CDR Inserter Demo written in .NET Core, C#. Technologies used in this project include Worker Services, Kafka, Docker, Multi-Threading, and realtime processing. Demonstrated thread synchronization by using ManualResetEvent and showed how Multithreading technique could help in processing large amounts of CDR in realtime.
 
 ## Architecture Diagram
 ![image](./src/img/cdr-inserter-architecture.jpg)
@@ -8,7 +8,7 @@ Simplified CDR Inserter Demo written in .NET Core, C#. Technologies used in this
 ## Possible Improvements
 1. Adding Outbox Pattern to the publishing event to ensure data consistency.
 2. Add error handling to the consumer service in the event that the consumer is unable to consume the message.
-3. Add more CDR related files, e.g., Usage Detail Record(UDR) in this program.
+3. Add more CDR related files, e.g., Usage Detail Record(UDR) to this program.
 
 ## Author
 Tea Bin Xiong
