@@ -10,6 +10,11 @@ Tea Bin Xiong
 2. Add error handling to the consumer service in the event that the consumer is unable to consume the message.
 3. Add more CDR related files, e.g., Usage Detail Record(UDR) in this program.
 
+
+## Architecture Diagram
+![image](./img/cdr-inserter-architecture.jpg)
+
+
 ## Projects
 1) CDR Consumer App - Cdr.Inserter.Monitor
 2) CDR Inserter Workers - Cdr.Inserter.Workers
