@@ -14,8 +14,8 @@ Simplified CDR Inserter Demo written in .NET Core, C#. Technologies used in this
 Tea Bin Xiong
 
 ## Projects
-1) CDR Consumer App - Cdr.Inserter.Monitor
-2) CDR Inserter Workers - Cdr.Inserter.Workers
+1) CDR Consumer App - [Cdr.Inserter.Monitor](src/Cdr.Inserter.Workers/Cdr.Inserter.Monitor) (CDR Inserter Monitor)
+2) CDR Inserter Workers -  [Cdr.Inserter.Workers](src/Cdr.Inserter.Workers/Cdr.Inserter.Workers) (File Watcher Service + Csv File Processing Service)
 
 ## Infrastructure
 1) Docker
